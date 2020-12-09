@@ -1,9 +1,12 @@
 <p id="notice"><%= notice %></p>
 
 <p>
-  <strong>Is activated:</strong>
-  <%= @contest.is_activated %><br>
   Name: <%= @contest.name %>
+  <ol>
+    <% for qn in @questions do %>
+    <li><%= qn.problem %></li>
+    <% end %>
+  </ol>
 </p>
 
 <%= link_to 'Edit', edit_contest_path(@contest) %> |

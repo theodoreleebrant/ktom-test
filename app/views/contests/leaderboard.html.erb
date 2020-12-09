@@ -1,0 +1,20 @@
+<h1>Leaderboard</h1>
+Contest has closed.
+
+<table>
+  <thead>
+  <tr>
+    <th>Name</th>
+    <th>Total Score</th>
+  </tr>
+  </thead>
+
+  <tbody>
+  <% @leaderboard_array.each do |entry| %>
+    <tr>
+      <td><%= entry[:name] %></td>
+      <td><%= entry[:score] %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

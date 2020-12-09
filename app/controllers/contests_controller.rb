@@ -4,12 +4,30 @@ class ContestsController < ApplicationController
   # GET /contests
   # GET /contests.json
   def index
-    @contests = Contest.all
+    @contests = Contest.all.order(:id)
   end
 
   # GET /contests/1
   # GET /contests/1.json
   def show
+    @questions = @contest.questions.order(:question_number)
+    if @contest.is_activated
+      render "show"
+    else
+      @submissions = Submission.where(contest_id: @contest.id)
+      @users = @submissions.distinct.pluck(:user_id) #Get unique users
+      @leaderboard_array = []
+      for id in @users do
+        user_with_score = {}
+        user_score = @submissions.where(user_id: id).sum(:marks)
+        user_name = User.find(id).name
+        user_with_score[:score] = user_score
+        user_with_score[:name] = user_name
+        @leaderboard_array.push(user_with_score)
+      end
+      @leaderboard_array.sort_by! { |key| key["score"]}
+      render "leaderboard"
+    end
   end
 
   # GET /contests/new
