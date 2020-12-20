@@ -1,10 +1,11 @@
 class QuestionsController < ApplicationController
   before_action :set_question, only: [:show, :edit, :update, :destroy]
+  before_action :set_contest
 
   # GET /questions
   # GET /questions.json
   def index
-    @questions = Question.all
+    @questions = @contest.questions
   end
 
   # GET /questions/1
@@ -14,7 +15,7 @@ class QuestionsController < ApplicationController
 
   # GET /questions/new
   def new
-    @question = Question.new
+    @question = @contest.questions.new
   end
 
   # GET /questions/1/edit
@@ -24,11 +25,11 @@ class QuestionsController < ApplicationController
   # POST /questions
   # POST /questions.json
   def create
-    @question = Question.new(question_params)
+    @question = @contest.questions.create(question_params)
 
     respond_to do |format|
-      if @question.save && Contest.find(@question.contest_id)
-        format.html { redirect_to @question, notice: 'Question was successfully created.' }
+      if !@question.errors.any?
+        format.html { redirect_to contest_question_url(@contest, @question), notice: 'Question was successfully created.' }
         format.json { render :show, status: :created, location: @question }
       else
         format.html { render :new }
@@ -41,8 +42,8 @@ class QuestionsController < ApplicationController
   # PATCH/PUT /questions/1.json
   def update
     respond_to do |format|
-      if @question.update(question_params) && Contest.find(@question.contest_id)
-        format.html { redirect_to @question, notice: 'Question was successfully updated.' }
+      if @question.update(question_params)
+        format.html { redirect_to contest_question_url(@contest, @question), notice: 'Question was successfully updated.' }
         format.json { render :show, status: :ok, location: @question }
       else
         format.html { render :edit }
@@ -56,7 +57,7 @@ class QuestionsController < ApplicationController
   def destroy
     @question.destroy
     respond_to do |format|
-      format.html { redirect_to questions_url, notice: 'Question was successfully destroyed.' }
+      format.html { redirect_to contest_questions_url, notice: 'Question was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -67,8 +68,13 @@ class QuestionsController < ApplicationController
       @question = Question.find(params[:id])
     end
 
+    # Set the contest, to be done before any actions
+    def set_contest
+      @contest = Contest.find(params[:contest_id])
+    end
+
     # Only allow a list of trusted parameters through.
     def question_params
-      params.require(:question).permit(:question_number, :problem, :answer, :contest_id, :maximum_score)
+      params.require(:question).permit(:question_number, :contest_id, :problem, :answer, :maximum_score)
     end
 end

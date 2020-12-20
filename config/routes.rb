@@ -1,8 +1,9 @@
 Rails.application.routes.draw do
   resources :submissions
-  resources :questions
   resources :users
-  resources :contests
+  resources :contests do
+    resources :questions
+  end
   resources :sessions, only: [:new, :create, :destroy]
 
   get 'signup', to: 'users#new', as: 'signup'

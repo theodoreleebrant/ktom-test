@@ -1,6 +1,7 @@
 <p id="notice"><%= notice %></p>
 
 <h1>Questions</h1>
+<h2>Contest Name: <%= @contest.name %></h2>
 
 <table>
   <thead>
@@ -8,9 +9,8 @@
       <th>Question number</th>
       <th>Problem</th>
       <th>Answer</th>
-      <th>Contest</th>
       <th>Maximum score</th>
-      <th colspan="3"></th>
+      <th colspan="2"></th>
     </tr>
   </thead>
 
@@ -20,11 +20,9 @@
         <td><%= question.question_number %></td>
         <td><%= question.problem %></td>
         <td><%= question.answer %></td>
-        <td><%= question.contest_id %></td>
         <td><%= question.maximum_score %></td>
-        <td><%= link_to 'Show', question %></td>
-        <td><%= link_to 'Edit', edit_question_path(question) %></td>
-        <td><%= link_to 'Destroy', question, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to 'Edit', edit_contest_question_path(@contest, question) %></td>
+        <td><%= link_to 'Destroy', contest_question_path(@contest, question), method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>
@@ -32,4 +30,5 @@
 
 <br>
 
-<%= link_to 'New Question', new_question_path %>
+<%= link_to 'New Question', new_contest_question_path %> |
+<%= link_to 'Back to contest', contest_path(@contest) %>
