@@ -1,5 +1,6 @@
 class ContestsController < ApplicationController
   before_action :set_contest, only: [:show, :edit, :update, :destroy]
+  before_action :set_submissions, only: [:show]
 
   # GET /contests
   # GET /contests.json
@@ -79,6 +80,17 @@ class ContestsController < ApplicationController
     end
   end
 
+  def set_submissions
+    @submissions = Submission.where(user_id: current_user.id, contest_id: @contest.id).includes(:question)
+    @submission_is_present = @submissions.present?
+
+    unless @submission_is_present then
+      @contest.questions.all.each do |q|
+        @submissions << Submission.new(question_id: q.id)
+      end
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_contest
@@ -87,6 +99,6 @@ class ContestsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def contest_params
-      params.require(:contest).permit(:is_activated, :name)
+      params.require(:contest).permit(:is_activated, :name, submissions_attributes: [:answer, :user_id, :question_id, :contest_id, :id])
     end
 end

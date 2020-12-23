@@ -1,12 +1,23 @@
 <p id="notice"><%= notice %></p>
 <h2>Contest name: <%= @contest.name %></h2>
-<p>
-  <ol>
-    <% for qn in @contest.questions do %>
-    <li><%= qn.problem %></li>
+
+<%= form_with model: @contest do |contest_form| %>
+  <% @submissions.each do |submissions_attributes, idx| %>
+    <%= contest_form.fields_for(:submissions_attributes, submissions_attributes, index: idx) do |submission_form| %>
+      <%= submissions_attributes.question.problem %>
+      <%= submission_form.text_field :answer %>
+      <%= submission_form.hidden_field :user_id, value: current_user.id %>
+      <%= submission_form.hidden_field :question_id, value:submissions_attributes.question.id %>
+      <%= submission_form.hidden_field :contest_id, value: @contest.id %>
+      <% if @submission_is_present %>
+        <%= submission_form.hidden_field :id, value: submissions_attributes.id %>
+      <% end %>
+      <br>
     <% end %>
-  </ol>
-</p>
+  <% end %>
+  <%= contest_form.submit %>
+<% end %>
+
 
 <%= link_to 'Manage Questions', contest_questions_path(@contest) %> |
 <%= link_to 'Edit Contest', edit_contest_path(@contest) %> |

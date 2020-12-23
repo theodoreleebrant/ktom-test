@@ -2,18 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="cbadba5e-919c-4732-a875-1a2ddb2668d0" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/ktom-test.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/ktom-test.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/controllers/questions_controller.rb" beforeDir="false" afterPath="$PROJECT_DIR$/app/controllers/questions_controller.rb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models/question.rb" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/question.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/controllers/contests_controller.rb" beforeDir="false" afterPath="$PROJECT_DIR$/app/controllers/contests_controller.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/controllers/submissions_controller.rb" beforeDir="false" afterPath="$PROJECT_DIR$/app/controllers/submissions_controller.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/models/contest.rb" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/contest.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/models/submission.rb" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/submission.rb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/views/contests/show.html.erb" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/contests/show.html.erb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/views/questions/_form.html.erb" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/questions/_form.html.erb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/views/questions/edit.html.erb" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/questions/edit.html.erb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/views/questions/index.html.erb" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/questions/index.html.erb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/views/questions/new.html.erb" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/questions/new.html.erb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/views/questions/show.html.erb" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/questions/show.html.erb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/database.yml" beforeDir="false" afterPath="$PROJECT_DIR$/config/database.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/routes.rb" beforeDir="false" afterPath="$PROJECT_DIR$/config/routes.rb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/views/submissions/_form.html.erb" beforeDir="false" afterPath="$PROJECT_DIR$/app/views/submissions/_form.html.erb" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -158,7 +153,8 @@
       <workItem from="1607522730021" duration="2876000" />
       <workItem from="1608127190154" duration="929000" />
       <workItem from="1608393427076" duration="9448000" />
-      <workItem from="1608478988449" duration="1971000" />
+      <workItem from="1608478988449" duration="10620000" />
+      <workItem from="1608689026714" duration="15023000" />
     </task>
     <servers />
   </component>
