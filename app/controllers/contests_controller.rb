@@ -1,6 +1,5 @@
 class ContestsController < ApplicationController
   before_action :set_contest, only: [:show, :edit, :update, :destroy]
-  before_action :set_submissions, only: [:show]
 
   # GET /contests
   # GET /contests.json
@@ -13,10 +12,20 @@ class ContestsController < ApplicationController
   def show
     @questions = @contest.questions.order(:question_number)
     if @contest.is_activated
+      @submissions = Submission.where(user_id: current_user.id, contest_id: @contest.id).includes(:question)
+      @submission_is_present = @submissions.present?
+
+      unless @submission_is_present then
+        @contest.questions.all.each do |q|
+          @submissions.create(question_id: q.id)
+        end
+        # refresh list
+        @submissions = Submission.where(user_id: current_user.id, contest_id: @contest.id).includes(:question)
+      end
       render "show"
     else
       @submissions = Submission.where(contest_id: @contest.id)
-      @users = @submissions.distinct.pluck(:user_id) #Get unique users
+      @users = @submissions.pluck(:user_id).uniq #Get unique users
       @leaderboard_array = []
       for id in @users do
         user_with_score = {}
@@ -26,7 +35,7 @@ class ContestsController < ApplicationController
         user_with_score[:name] = user_name
         @leaderboard_array.push(user_with_score)
       end
-      @leaderboard_array.sort_by! { |key| key["score"]}
+      @leaderboard_array.sort_by { |key| key["score"]}.reverse!
       render "leaderboard"
     end
   end
@@ -77,17 +86,6 @@ class ContestsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to contests_url, notice: 'Contest was successfully destroyed.' }
       format.json { head :no_content }
-    end
-  end
-
-  def set_submissions
-    @submissions = Submission.where(user_id: current_user.id, contest_id: @contest.id).includes(:question)
-    @submission_is_present = @submissions.present?
-
-    unless @submission_is_present then
-      @contest.questions.all.each do |q|
-        @submissions << Submission.new(question_id: q.id)
-      end
     end
   end
 
