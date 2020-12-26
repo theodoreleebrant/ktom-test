@@ -1,5 +1,6 @@
 class ContestsController < ApplicationController
   before_action :set_contest, only: [:show, :edit, :update, :destroy]
+  authorize_resource
 
   # GET /contests
   # GET /contests.json
