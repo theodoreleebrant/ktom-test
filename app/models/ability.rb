@@ -7,19 +7,15 @@ class Ability
     user ||= User.new
 
     can :create, User
-
-    if user.role?(:guest) then
-      if user.role?(:user) then
-        can [:create, :update], Submission, user_id: user.id
-        can :read, Contest
-        can [:edit, :delete], User, user_id: user.id
-        if user.role?(:marker) then
-          can :manage, [Contest, Submission, Question]
-          if user.role?(:admin) then
-            can :manage, :all
-          end
-        end
-      end
+    if user.role?(:user)
+      can %i[create update], Submission, user_id: user.id
+      can :read, Contest
+      can %i[edit delete], User, user_id: user.id
+    elsif user.role?(:marker)
+      can :manage, [Contest, Submission, Question]
+      can %i[create edit delete], User, user_id: user.id
+    elsif user.role?(:admin)
+      can :manage, :all
     end
   end
 end

@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class ContestsController < ApplicationController
-  before_action :set_contest, only: [:show, :edit, :update, :destroy]
+  before_action :set_contest, only: %i[show edit update destroy]
   authorize_resource
 
   # GET /contests
@@ -13,31 +15,11 @@ class ContestsController < ApplicationController
   def show
     @questions = @contest.questions.order(:question_number)
     if @contest.is_activated
-      @submissions = Submission.where(user_id: current_user.id, contest_id: @contest.id).includes(:question)
-      @submission_is_present = @submissions.present?
-
-      unless @submission_is_present then
-        @contest.questions.all.each do |q|
-          @submissions.create(question_id: q.id)
-        end
-        # refresh list
-        @submissions = Submission.where(user_id: current_user.id, contest_id: @contest.id).includes(:question)
-      end
-      render "show"
+      load_questions
+      render 'show'
     else
-      @submissions = Submission.where(contest_id: @contest.id)
-      @users = @submissions.pluck(:user_id).uniq #Get unique users
-      @leaderboard_array = []
-      for id in @users do
-        user_with_score = {}
-        user_score = @submissions.where(user_id: id).sum(:marks)
-        user_name = User.find(id).name
-        user_with_score[:score] = user_score
-        user_with_score[:name] = user_name
-        @leaderboard_array.push(user_with_score)
-      end
-      @leaderboard_array.sort_by { |key| key["score"]}.reverse!
-      render "leaderboard"
+      load_leaderboard
+      render 'leaderboard'
     end
   end
 
@@ -47,8 +29,7 @@ class ContestsController < ApplicationController
   end
 
   # GET /contests/1/edit
-  def edit
-  end
+  def edit; end
 
   # POST /contests
   # POST /contests.json
@@ -91,13 +72,43 @@ class ContestsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_contest
-      @contest = Contest.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def contest_params
-      params.require(:contest).permit(:is_activated, :name, submissions_attributes: [:answer, :user_id, :question_id, :contest_id, :id])
+  # Use callbacks to share common setup or constraints between actions.
+  def set_contest
+    @contest = Contest.find(params[:id])
+  end
+
+  # Only allow a list of trusted parameters through.
+  def contest_params
+    params.require(:contest).permit(:is_activated, :name,
+                                    submissions_attributes: %i[answer user_id question_id contest_id id])
+  end
+
+  # Load the questions for show
+  def load_questions
+    @submissions = Submission.where(user_id: current_user.id, contest_id: @contest.id).includes(:question)
+    @submission_is_present = @submissions.present?
+
+    return if @submission_is_present
+
+    @contest.questions.all.each do |q|
+      @submissions.create(question_id: q.id)
     end
+    # refresh list
+    @submissions = Submission.where(user_id: current_user.id, contest_id: @contest.id).includes(:question)
+  end
+
+  # Load leaderboard for show method
+  def load_leaderboard
+    @submissions = Submission.where(contest_id: @contest.id)
+    @users = @submissions.pluck(:user_id).uniq # Get unique users
+    @leaderboard_array = []
+    @users.each do |id|
+      user_with_score = {}
+      user_with_score[:score] = @submissions.where(user_id: id).sum(:marks)
+      user_with_score[:name] = User.find(id).name
+      @leaderboard_array.push(user_with_score)
+    end
+    @leaderboard_array.sort_by { |key| key['score'] }.reverse!
+  end
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Question < ApplicationRecord
   before_create :set_question_number
 
@@ -19,5 +21,4 @@ class Question < ApplicationRecord
     p previous_number
     self.question_number = previous_number.nil? ? 1 : previous_number + 1
   end
-
 end

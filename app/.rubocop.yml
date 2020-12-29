@@ -1,0 +1,10 @@
+# .rubocop.yml
+AllCops:
+  Exclude:
+    - schema.rb
+  NewCops: enable
+Documentation:
+  Enabled: false
+Metrics/MethodLength:
+  Max: 25
+

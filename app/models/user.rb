@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 class User < ApplicationRecord
   has_secure_password
   has_many :submissions
 
-  ROLES = {0 => :guest, 1 => :user, 2 => :marker, 3 => :admin}
+  ROLES = { 0 => :guest, 1 => :user, 2 => :marker, 3 => :admin }.freeze
 
   # Validation done on create and edit
   validates :email, presence: true, uniqueness: { case_sensitive: false }, format: { with: URI::MailTo::EMAIL_REGEXP }
@@ -13,6 +15,6 @@ class User < ApplicationRecord
   # end
 
   def role?(role_name)
-    ROLES[self.role.to_i] == role_name
+    ROLES[role.to_i] == role_name
   end
 end
