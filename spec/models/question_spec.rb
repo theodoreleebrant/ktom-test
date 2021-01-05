@@ -13,22 +13,12 @@ RSpec.describe Question, type: :model do
     expect(subject).to be_valid
   end
 
-  it "has a question number" do
-    subject.question_number = nil
-    expect(subject).to_not be_valid
-  end
-
-  it "has a positive question number" do
-    subject.question_number = -1
-    expect(subject).to_not be_valid
-  end
-
   it "has a maximum score" do
     subject.maximum_score = nil
     expect(subject).to_not be_valid
   end
 
-  it "has a positive question number" do
+  it "has a positive maximum score" do
     subject.maximum_score = -1
     expect(subject).to_not be_valid
   end
