@@ -8,11 +8,7 @@ class User < ApplicationRecord
 
   # Validation done on create and edit
   validates :email, presence: true, uniqueness: { case_sensitive: false }, format: { with: URI::MailTo::EMAIL_REGEXP }
-
-  # initialization of role
-  # def initialize(role_id = 1)
-  #   role = ROLES.has_key?(role_id.to_i) ? ROLES[role_id.to_i] : ROLES[0]
-  # end
+  validates :name, presence: true
 
   def role?(role_name)
     ROLES[role.to_i] == role_name

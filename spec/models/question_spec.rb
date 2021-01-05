@@ -1,8 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe Question, type: :model do
-  Contest.create(name: "Test", is_activated: false)
-
   subject { described_class.new(
     problem: "valid problem",
     answer: "valid answer",
