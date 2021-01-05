@@ -38,6 +38,31 @@ class SubmissionsController < ApplicationController
     end
   end
 
+
+
+  def edit_multiple
+    @submissions = Submission.find(params[:submission_ids])
+  end
+
+  def update_multiple
+    p multiple_submission_params
+    hash = multiple_submission_params[:submissions]
+    hash.each do |id, submission|
+      p id
+      p submission
+      @submission = Submission.find(id)
+
+      if @submission.present?
+        @submission.update(submission)
+      else
+        @submission = Submission.create(submission)
+      end
+    end
+
+    redirect_to contests_path
+  end
+
+
   # PATCH/PUT /submissions/1
   # PATCH/PUT /submissions/1.json
   def update
@@ -73,7 +98,10 @@ class SubmissionsController < ApplicationController
   def submission_params
     hash = params.require(:submission).permit(:question_id, :answer, :marks)
     hash[:user_id] = current_user&.id
-    hash[:contest_id] = Question.find(hash[:question_id])&.contest_id
     hash
+  end
+
+  def multiple_submission_params
+    params.permit(submissions: %i[answer user_id question_id id])
   end
 end

@@ -8,7 +8,7 @@ class Ability
 
     can :create, User
     if user.role?(:user)
-      can %i[create update], Submission, user_id: user.id
+      can %i[create update update_multiple], Submission, user_id: user.id
       can :read, Contest
       can %i[edit delete], User, user_id: user.id
     elsif user.role?(:marker)

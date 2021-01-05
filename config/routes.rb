@@ -1,7 +1,12 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
-  resources :submissions
+  resources :submissions do
+    collection do
+      get :edit_multiple
+      put :update_multiple
+    end
+  end
   resources :users
   resources :contests do
     resources :questions

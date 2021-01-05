@@ -81,12 +81,13 @@ class ContestsController < ApplicationController
   # Only allow a list of trusted parameters through.
   def contest_params
     params.require(:contest).permit(:is_activated, :name,
-                                    submissions_attributes: %i[answer user_id question_id contest_id id])
+                                    submissions_attributes: %i[answer user_id question_id id])
   end
 
   # Load the questions for show
   def load_questions
     @submissions = Submission.join_questions(current_user.id, @contest.id)
+    p @submissions
     @submission_is_present = @submissions.present?
 
     return if @submission_is_present

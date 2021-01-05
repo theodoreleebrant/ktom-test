@@ -5,7 +5,7 @@ class Question < ApplicationRecord
   has_many :submissions
   belongs_to :contest
 
-  validates :maximum_score, :question_number, presence: true, :numericality => { :greater_than_or_equal_to => 1 }
+  validates :maximum_score, :question_number, presence: true, :numericality => { :greater_than_or_equal_to => 1 }, on: :save
   validates :problem, :answer, presence: true
 
   def set_question_number

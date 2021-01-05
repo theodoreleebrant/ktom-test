@@ -10,12 +10,11 @@ class Submission < ApplicationRecord
 
   default_scope { order(question_id: :asc) }
 
-  validates :answer, presence: true
+  validates :answer, presence: true, on: :save
 
   def allow_only_single_submission
     return unless Submission.where(user_id: user_id).where(question_id: question_id).any?
-
-    errors.add(:questiion_id, 'You have already submitted this question')
+    errors.add(:question_id, 'You have already submitted this question')
   end
 
   def update_marks
@@ -25,4 +24,5 @@ class Submission < ApplicationRecord
   def self.join_questions(user_id, contest_id)
     where(user_id: user_id).includes(:question).where(questions: { contest_id: contest_id })
   end
+
 end

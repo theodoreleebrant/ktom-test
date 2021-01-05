@@ -1,22 +1,41 @@
 <p id="notice"><%= notice %></p>
 <h2>Contest name: <%= @contest.name %></h2>
 
-<%= form_with model: @contest do |contest_form| %>
-  <% @submissions.each do |submissions_attributes, idx| %>
-    <%= contest_form.fields_for(:submissions_attributes, submissions_attributes, index: idx) do |submission_form| %>
-      <%= submissions_attributes.question.problem %>
-      <%= submission_form.text_field :answer %>
-      <%= submission_form.hidden_field :user_id, value: current_user.id %>
-      <%= submission_form.hidden_field :question_id, value:submissions_attributes.question.id %>
-      <%= submission_form.hidden_field :contest_id, value: @contest.id %>
+
+<%= form_tag update_multiple_submissions_path, method: :put do%>
+  <% @submissions.each do |submission| %>
+    <%= fields_for "submissions[]", submission do |f| %>
+      <%= submission.question.problem %>
+      <%= f.text_field :answer %>
+      <%= f.hidden_field :user_id, value: current_user.id %>
+      <%= f.hidden_field :question_id, value: submission.question.id %>
       <% if @submission_is_present %>
-        <%= submission_form.hidden_field :id, value: submissions_attributes.id %>
+      <%= f.hidden_field :id, value: submission.id %>
       <% end %>
-      <br>
     <% end %>
+    <br>
   <% end %>
-  <%= contest_form.submit %>
+  <div class="actions">
+    <%= submit_tag "Submit" %>
+  </div>
 <% end %>
+
+<%#= form_with model: @contest do |contest_form| %>
+  <%# @submissions.each do |submissions_attributes, idx| %>
+    <%#= contest_form.fields_for(:submissions_attributes, submissions_attributes, index: idx) do |submission_form| %>
+      <%#= submissions_attributes.question.problem %>
+      <%#= submission_form.text_field :answer %>
+      <%#= submission_form.hidden_field :user_id, value: current_user.id %>
+      <%#= submission_form.hidden_field :question_id, value:submissions_attributes.question.id %>
+      <%#= submission_form.hidden_field :contest_id, value: @contest.id %>
+      <%# if @submission_is_present %>
+        <%#= submission_form.hidden_field :id, value: submissions_attributes.id %>
+      <%# end %>
+<!--      <br>-->
+    <%# end %>
+  <%# end %>
+  <%#= contest_form.submit %>
+<%# end %>
 
 
 <%= link_to 'Manage Questions', contest_questions_path(@contest) %> |
