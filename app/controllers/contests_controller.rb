@@ -86,7 +86,7 @@ class ContestsController < ApplicationController
 
   # Load the questions for show
   def load_questions
-    @submissions = Submission.where(user_id: current_user.id, contest_id: @contest.id).includes(:question)
+    @submissions = Submission.join_questions(current_user.id, @contest.id)
     @submission_is_present = @submissions.present?
 
     return if @submission_is_present
@@ -95,12 +95,12 @@ class ContestsController < ApplicationController
       @submissions.create(question_id: q.id)
     end
     # refresh list
-    @submissions = Submission.where(user_id: current_user.id, contest_id: @contest.id).includes(:question)
+    @submissions = Submission.join_questions(current_user.id, @contest.id)
   end
 
   # Load leaderboard for show method
   def load_leaderboard
-    @submissions = Submission.where(contest_id: @contest.id)
+    @submissions = Submission.join_questions(current_user.id, @contest.id)
     @users = @submissions.pluck(:user_id).uniq # Get unique users
     @leaderboard_array = []
     @users.each do |id|

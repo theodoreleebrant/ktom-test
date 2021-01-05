@@ -3,7 +3,8 @@
 class Submission < ApplicationRecord
   belongs_to :user
   belongs_to :question
-  belongs_to :contest
+
+  delegate :contest, to: :question
 
   before_save :update_marks
 
@@ -21,5 +22,9 @@ class Submission < ApplicationRecord
 
   def update_marks
     self.marks = question.answer == answer ? question.maximum_score : 0
+  end
+
+  def self.join_questions(user_id, contest_id)
+    where(user_id: user_id).includes(:question).where(questions: { contest_id: contest_id })
   end
 end

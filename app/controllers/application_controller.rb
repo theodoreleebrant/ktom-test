@@ -11,4 +11,8 @@ class ApplicationController < ActionController::Base
       @current_user = nil
     end
   end
+
+  rescue_from CanCan::AccessDenied do |exception|
+    redirect_to error_url
+  end
 end

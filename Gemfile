@@ -33,6 +33,12 @@ gem 'bootsnap', '>= 1.4.2', require: false
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
+
+  # Use rubocop for linter
+  gem 'rubocop', require: false
+
+  # Use rspec for testing
+  gem 'rspec-rails'
 end
 
 group :development do
@@ -57,6 +63,3 @@ gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 
 # Use cancancan for AuthZ
 gem 'cancancan'
-
-# Use rubocop for linter
-gem 'rubocop', require: false

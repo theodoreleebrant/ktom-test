@@ -27,13 +27,18 @@
         <td><%= contest.name %></td>
         <td><%= contest.is_activated %></td>
         <td><%= link_to 'Show', contest %></td>
+        <% if can? :update, contest %>
         <td><%= link_to 'Edit', edit_contest_path(contest) %></td>
+        <% end  %>
+        <% if can? :delete, contest %>
         <td><%= link_to 'Destroy', contest, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <% end  %>
       </tr>
     <% end %>
   </tbody>
 </table>
 
 <br>
-
+<% if can? :create, Contest %>
 <%= link_to 'New Contest', new_contest_path %>
+<% end  %>

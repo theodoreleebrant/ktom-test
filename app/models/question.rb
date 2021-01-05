@@ -2,7 +2,7 @@
 
 class Question < ApplicationRecord
   before_create :set_question_number
-
+  has_many :submissions
   belongs_to :contest
 
   validates :maximum_score, presence: true
